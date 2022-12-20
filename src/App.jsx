@@ -1,46 +1,56 @@
+import React from 'react';
 import './App.css'
 import imgLogo from './assets/freecodecamp-logo.png';
 import Boton from './components/Boton';
 import Contador from './components/Contador';
-import { useState } from 'react';
 
-function App() {
-  const [numClicks, setNumclicks] = useState(0);
+class App extends React.Component{
 
-  const manejarClick = () => {
+  constructor(){
+    super();
+    this.state = {
+      numClicks: 0
+    };
+    this.manejarClick = this.manejarClick.bind(this);
+    this.reiniciarContador = this.reiniciarContador.bind(this);
+  }
+  
+  manejarClick(){
     console.log("Click");
-    setNumclicks(numClicks + 1);
+    this.setState(({ numClicks }) => ({numClicks: numClicks + 1}));
   }
-
-  const reiniciarContador = () => {
+  
+  reiniciarContador(){
     console.log("Reiniciar");
-    setNumclicks(0);
+    this.setState({numClicks: 0}); 
   }
 
-  return (
-    <div className="App">
-      <div className='logo'>
-        <img 
-          className='img-logo'
-          src={imgLogo}
-          alt="logo de freeCodeCamp"
-        />
+  render(){
+    return (
+      <div className="App">
+        <div className='logo'>
+          <img 
+            className='img-logo'
+            src={imgLogo}
+            alt="logo de freeCodeCamp"
+          />
+        </div>
+        <div className="contenedor-p">
+          <Contador numClicks={this.state.numClicks}/>
+          <Boton 
+            texto='Click'
+            esBotonDeClick={true}
+            manejarClick={this.manejarClick}
+          />
+          <Boton 
+            texto='Reiniciar'
+            esBotonDeClick={false}
+            manejarClick={this.reiniciarContador}
+          />
+        </div>
       </div>
-      <div className="contenedor-p">
-        <Contador numClicks={numClicks}/>
-        <Boton 
-          texto='Click'
-          esBotonDeClick={true}
-          manejarClick={manejarClick}
-        />
-        <Boton 
-          texto='Reiniciar'
-          esBotonDeClick={false}
-          manejarClick={reiniciarContador}
-        />
-      </div>
-    </div>
-  )
+    );
+  }
 }
 
 export default App
